@@ -8,7 +8,7 @@ def process(lines):
         data.append(values)
     return data
     
-def process_reports(values_reports):
+def part1_process_reports(values_reports):
     counter = 0
     for values in values_reports:
         if report_is_secure(values): counter += 1
@@ -36,9 +36,27 @@ def report_is_secure(values_report):
         previous = value
     return is_secure
 
+# Part 2 with Problem Dampener
+def part2_process_reports(values_reports):
+    counter = 0
+    for values in values_reports:
+        if report_is_secure_part2(values): counter += 1
+    return counter
+
+def report_is_secure_part2(values_report):
+    if report_is_secure(values_report):
+        return True
+    for i in range(len(values_report)):
+        values_report_modified = values_report[:i] + values_report[i+1:]
+        if report_is_secure(values_report_modified):
+            return True
+    return False
+
 if __name__=="__main__":
     with open(FILE_INPUT) as input_file:
         lines = input_file.readlines()
         data = process(lines)
-        result = process_reports(data)
+        result = part1_process_reports(data)
+        print(result)
+        result = part2_process_reports(data)
         print(result)
